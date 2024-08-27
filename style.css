@@ -1,0 +1,91 @@
+.box{
+    height: 55px;
+    width: 150px;
+    box-shadow: 2px 2px 7px rgb(214, 3, 3);
+    background-color: white;
+    
+    display: flex;
+    font-weight: bold;
+    font-family: monospace, cursive, courier;
+    font-size: 18px;
+    border-radius: 11px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-wrap: wrap;
+    padding: 5px 10px 10px 10px;
+}
+
+.box:hover{
+    background-color: rgb(0, 0, 0);
+    box-shadow: 2px 2px 22px rgb(205, 19, 252);
+    font-family: cursive;
+    color: white;
+    font-size: 20px;
+}
+
+
+.container{
+    box-shadow: 2px 2px 7px rgb(214, 3, 3);
+    max-width: 700px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 29px;
+    border: 3px solid rgb(157, 0, 255);
+    border-radius: 12px;
+    min-height: 300px;
+    flex-wrap: wrap;
+    align-content: center;
+    margin: 5px;
+    padding: 40px 10px 40px 10px;
+    background-color: rgba(244, 244, 244, 0.6);
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    background-color: rgb(224, 217, 217);
+}
+
+p{
+    font-weight: bold;
+    font-size: 18px;
+    font-family: monospace;
+
+}
+
+.heading-container{
+    padding: 0px 50px 0px 50px;
+    margin-bottom: 40px;
+    border-radius: 50px;
+    box-shadow: 2px 2px 55px red;
+}
+
+.heading-container:hover{
+    background-color: red;
+    color: white;
+    font-size: 28px;
+}
+
+@media(max-width: 480px){
+    .container{
+        flex-wrap: wrap;
+        transform: scale(0.9);
+    }
+    body{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        align-content: center;
+    }
+    .box{
+        width: 100px;
+    }
+    .box:hover{
+        font-family: courier;
+    }
+}
