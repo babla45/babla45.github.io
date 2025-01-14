@@ -25,8 +25,16 @@ async function loadLinks() {
     const querySnapshot = await getDocs(collection(db, "links"));
     const container = document.querySelector('.grid');
     container.innerHTML = '';
+    
+    // Convert querySnapshot to array and sort by name
+    const links = [];
     querySnapshot.forEach((doc) => {
-        const link = doc.data();
+        links.push({ ...doc.data(), id: doc.id });
+    });
+    
+    links.sort((a, b) => a.name.localeCompare(b.name));
+
+    links.forEach((link) => {
         const a = document.createElement('a');
         a.href = link.url;
         a.textContent = link.name;

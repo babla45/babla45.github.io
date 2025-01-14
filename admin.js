@@ -21,15 +21,23 @@ async function loadLinks() {
     const querySnapshot = await getDocs(collection(db, "links"));
     const linksTable = document.getElementById('linksTable');
     linksTable.innerHTML = '';
+    
+    // Convert querySnapshot to array and sort by name
+    const links = [];
     querySnapshot.forEach((doc) => {
-        const link = doc.data();
+        links.push({ ...doc.data(), id: doc.id });
+    });
+    
+    links.sort((a, b) => a.name.localeCompare(b.name));
+
+    links.forEach((link) => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
-            <td><input type="text" value="${link.name}" data-id="${doc.id}" class="link-name" /></td>
-            <td><input type="text" value="${link.url}" data-id="${doc.id}" class="link-url" /></td>
+            <td><input type="text" value="${link.name}" data-id="${link.id}" class="link-name" /></td>
+            <td><input type="text" value="${link.url}" data-id="${link.id}" class="link-url" /></td>
             <td>
-                <button class="edit-btn" data-id="${doc.id}">Edit</button>
-                <button class="delete-btn" data-id="${doc.id}">Delete</button>
+                <button class="edit-btn" data-id="${link.id}">Edit</button>
+                <button class="delete-btn" data-id="${link.id}">Delete</button>
             </td>
         `;
         linksTable.appendChild(tr);
