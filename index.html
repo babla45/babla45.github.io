@@ -4,26 +4,43 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Project Lists</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body>
+  <body class="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100">
+    <div class="container mx-auto px-4 py-8">
+      <!-- Header -->
+      <div class="text-center mb-12">
+        <h1 class="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-600 mb-4 animate-fade-in">
+          My Project Lists
+        </h1>
+        <p class="text-gray-600 text-lg">A collection of my awesome projects</p>
+      </div>
 
-    <br><br>
-    <div class="heading-container">     
-       <p class="heading">My Project Lists</p>
+      <!-- Projects Container -->
+      <div class="container bg-white/40 backdrop-blur-sm rounded-xl p-8 shadow-2xl">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Links will be loaded dynamically from Firestore -->
+        </div>
+      </div>
+
+      <!-- Admin Link -->
+      <div class="text-center mt-8">
+        <a href="admin.html" 
+           class="inline-flex items-center px-6 py-3 text-lg font-medium text-white bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg hover:opacity-90 transition-all duration-200 shadow-lg hover:shadow-xl">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
+          </svg>
+          Admin Panel
+        </a>
+      </div>
+
+      <!-- Message Display -->
+      <p id="msg" class="text-center mt-6 text-gray-600 text-lg font-medium"></p>
+
+      <!-- Flash Message Container -->
+      <div class="flash-message-container"></div>
     </div>
-    <div class="container">
-        <!-- Links will be loaded dynamically from Firestore -->
-    </div>
-
-    <div class="flash-message-container">
-        <!-- Flash messages will be displayed here -->
-    </div>
-
-    <a href="admin.html" class="admin-link">Go to Admin Panel</a>
-
-    <p style="text-align: center; font-size: 19px" id="msg">
-    </p>
 
     <script type="module" src="script.js"></script>
   </body>

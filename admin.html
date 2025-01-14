@@ -7,11 +7,13 @@
     <link rel="stylesheet" href="style.css" />
     <script>
       document.addEventListener('DOMContentLoaded', () => {
+        document.body.style.backgroundColor = '#000';
         const password = prompt('Enter the admin password:');
         if (password !== 'bib') {
           alert('Incorrect password!');
           window.location.href = 'index.html';
         }
+        document.body.style.backgroundColor = '';
       });
     </script>
   </head>

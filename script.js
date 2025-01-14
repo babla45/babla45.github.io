@@ -23,19 +23,19 @@ const db = getFirestore(app);
 // Function to load links from Firestore
 async function loadLinks() {
     const querySnapshot = await getDocs(collection(db, "links"));
-    const container = document.querySelector('.container');
+    const container = document.querySelector('.grid');
     container.innerHTML = '';
     querySnapshot.forEach((doc) => {
         const link = doc.data();
         const a = document.createElement('a');
         a.href = link.url;
         a.textContent = link.name;
-        a.className = 'box';
+        a.className = 'transform hover:scale-105 transition-all duration-200 bg-white/70 backdrop-blur-sm rounded-lg p-6 shadow-lg hover:shadow-xl flex items-center justify-center text-lg font-medium text-purple-700 hover:text-purple-900 min-h-[100px] hover:bg-white/90';
         container.appendChild(a);
     });
 
     // Re-attach click event listeners to the new elements
-    const boxes = document.querySelectorAll('.box');
+    const boxes = document.querySelectorAll('.grid a');
     boxes.forEach(box => {
         box.addEventListener('click', () => {
             resultMsg.textContent = box.textContent;
