@@ -42,15 +42,65 @@ function initializeDarkMode() {
     });
 }
 
-// Admin password protection
+// Replace default password prompt with custom modal
 document.querySelector('a[href="admin.html"]')?.addEventListener('click', (e) => {
     e.preventDefault();
-    const password = prompt('Please enter admin password:');
-    if (password === 'bib') {
-        localStorage.setItem('adminAuthenticated', 'true');
-        window.location.href = 'admin.html';
-    } else {
-        alert('Incorrect password!');
+    
+    // Create modal backdrop
+    const backdrop = document.createElement('div');
+    backdrop.className = 'fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center';
+    
+    // Create modal content
+    backdrop.innerHTML = `
+        <div class="bg-gradient-to-r from-green-800/95 to-red-800/95 p-8 rounded-xl shadow-2xl max-w-md w-full mx-4 transform transition-all">
+            <h2 class="text-2xl font-bold text-white mb-6 text-center">Admin Access</h2>
+            <input type="password" id="adminPasswordInput" placeholder="Enter password" 
+                   class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 mb-4"
+                   autocomplete="off">
+            <div class="flex gap-3">
+                <button id="submitPassword" class="flex-1 bg-white text-purple-600 px-6 py-3 rounded-lg font-medium hover:bg-white/90 transition-colors">
+                    Login
+                </button>
+                <button id="cancelLogin" class="flex-1 bg-transparent border border-white/20 text-white px-6 py-3 rounded-lg font-medium hover:bg-white/10 transition-colors">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(backdrop);
+    
+    // Focus input
+    const input = backdrop.querySelector('#adminPasswordInput');
+    input.focus();
+    
+    // Handle input enter key
+    input.addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') {
+            handlePassword(input.value);
+        }
+    });
+    
+    // Handle submit button
+    backdrop.querySelector('#submitPassword').addEventListener('click', () => {
+        handlePassword(input.value);
+    });
+    
+    // Handle cancel button
+    backdrop.querySelector('#cancelLogin').addEventListener('click', () => {
+        document.body.removeChild(backdrop);
+    });
+    
+    // Handle password check
+    function handlePassword(password) {
+        if (password === 'bib') {
+            localStorage.setItem('adminAuthenticated', 'true');
+            window.location.href = 'admin.html';
+        } else {
+            showFlashMessage('Incorrect password!');
+            input.value = '';
+            input.focus();
+        }
     }
 });
 
@@ -85,17 +135,16 @@ async function loadLinks() {
     });
 }
 
-// Function to show flash message
+// Updated flash message function
 function showFlashMessage(message) {
     const flashMessage = document.createElement('div');
-    flashMessage.className = 'flash-message';
+    flashMessage.className = 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black/80 text-white px-8 py-4 rounded-lg shadow-2xl z-50 backdrop-blur-sm text-lg font-medium';
     flashMessage.textContent = message;
     document.body.appendChild(flashMessage);
-    flashMessage.style.display = 'block';
     setTimeout(() => {
-        flashMessage.style.display = 'none';
-        document.body.removeChild(flashMessage);
-    }, 3000);
+        flashMessage.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+        setTimeout(() => document.body.removeChild(flashMessage), 300);
+    }, 2000);
 }
 
 // Function to add a new link
@@ -119,10 +168,10 @@ async function deleteLink(name) {
     });
 }
 
-// Modify the admin panel event listeners to check authentication
+// Modify the admin panel event listeners to check authentication and show flash message on error
 document.getElementById('addLinkBtn')?.addEventListener('click', () => {
     if (localStorage.getItem('adminAuthenticated') !== 'true') {
-        alert('Unauthorized access!');
+        showFlashMessage('Unauthorized access!');
         window.location.href = 'index.html';
         return;
     }
@@ -133,7 +182,7 @@ document.getElementById('addLinkBtn')?.addEventListener('click', () => {
 
 document.getElementById('deleteLinkBtn')?.addEventListener('click', () => {
     if (localStorage.getItem('adminAuthenticated') !== 'true') {
-        alert('Unauthorized access!');
+        showFlashMessage('Unauthorized access!');
         window.location.href = 'index.html';
         return;
     }
