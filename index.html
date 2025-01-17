@@ -1,13 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Project Lists</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {}
+            }
+        }
+    </script>
     <link rel="stylesheet" href="style.css" />
+    <style>
+        .dark body { background: linear-gradient(to bottom right, #1a202c, #4a1d96, #1a202c); }
+        .dark .container > div { background-color: rgba(31, 41, 55, 0.4); }
+        .dark p { color: #d1d5db; }
+        .dark .grid a { 
+            background-color: rgba(31, 41, 55, 0.7);
+            color: #c084fc;
+        }
+        .dark .grid a:hover {
+            background-color: rgba(31, 41, 55, 0.9);
+            color: #ddd6fe;
+        }
+    </style>
   </head>
   <body class="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100">
+    <!-- Dark mode toggle -->
+    <button id="darkModeToggle" class="fixed top-4 right-4 p-2 rounded-lg bg-gray-200 dark:bg-gray-700">
+        <svg id="lightIcon" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/>
+        </svg>
+        <svg id="darkIcon" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+        </svg>
+    </button>
     <div class="container mx-auto px-4 py-8">
       <!-- Header -->
       <div class="text-center mb-12">

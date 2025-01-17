@@ -20,6 +20,39 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// Dark mode functionality
+function initializeDarkMode() {
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const html = document.documentElement;
+    const darkIcon = document.getElementById('darkIcon');
+    const lightIcon = document.getElementById('lightIcon');
+
+    // Check saved preference
+    if (localStorage.getItem('darkMode') === 'true') {
+        html.classList.add('dark');
+        darkIcon.classList.add('hidden');
+        lightIcon.classList.remove('hidden');
+    }
+
+    darkModeToggle.addEventListener('click', () => {
+        html.classList.toggle('dark');
+        darkIcon.classList.toggle('hidden');
+        lightIcon.classList.toggle('hidden');
+        localStorage.setItem('darkMode', html.classList.contains('dark'));
+    });
+}
+
+// Admin password protection
+document.querySelector('a[href="admin.html"]')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    const password = prompt('Please enter admin password:');
+    if (password === 'bib') {
+        window.location.href = 'admin.html';
+    } else {
+        alert('Incorrect password!');
+    }
+});
+
 // Function to load links from Firestore
 async function loadLinks() {
     const querySnapshot = await getDocs(collection(db, "links"));
@@ -38,7 +71,7 @@ async function loadLinks() {
         const a = document.createElement('a');
         a.href = link.url;
         a.textContent = link.name;
-        a.className = 'transform hover:scale-105 transition-all duration-200 bg-white/70 backdrop-blur-sm rounded-lg p-6 shadow-lg hover:shadow-xl flex items-center justify-center text-lg font-medium text-purple-700 hover:text-purple-900 min-h-[100px] hover:bg-white/90';
+        a.className = 'transform hover:scale-105 transition-all duration-200 bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-lg p-6 shadow-lg hover:shadow-xl flex items-center justify-center text-lg font-medium text-purple-700 dark:text-purple-400 hover:text-purple-900 dark:hover:text-purple-300 min-h-[100px] hover:bg-white/90 dark:hover:bg-gray-800/90';
         container.appendChild(a);
     });
 
@@ -97,5 +130,8 @@ document.getElementById('deleteLinkBtn')?.addEventListener('click', () => {
     deleteLink(name);
 });
 
-// Load links on page load
-loadLinks();
+// Make sure dark mode is initialized after DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    initializeDarkMode();
+    loadLinks();
+});
