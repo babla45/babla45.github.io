@@ -1,45 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Panel</title>
-    <link rel="stylesheet" href="style.css" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - My Projects</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
     <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        document.body.style.backgroundColor = '#000';
-        const password = prompt('Enter the admin password:');
-        if (password !== 'bib') {
-          alert('Incorrect password!');
-          window.location.href = 'index.html';
+        // Add dark mode support to Tailwind config
+        tailwind.config = {
+            darkMode: 'class'
         }
-        document.body.style.backgroundColor = '';
-      });
     </script>
-  </head>
-  <body>
-    <div class="admin-panel">
-        <h2>Admin Panel</h2>
-        <div id="flashMessage" class="flash-message"></div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>URL</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="linksTable">
-                <!-- Links will be loaded dynamically from Firestore -->
-            </tbody>
-        </table>
-        <h3>Add New Link</h3>
-        <input type="text" id="newLinkName" placeholder="Link Name" style="width: 100%;" />
-        <input type="text" id="newLinkUrl" placeholder="Link URL" style="width: 100%;" />
-        <button id="addNewLinkBtn">Add Link</button>
-        <button id="logoutBtn" class="logout-btn">Logout</button>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 transition-colors duration-200">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header with Dark Mode Toggle -->
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 dark:text-white">Admin Panel</h1>
+            <div class="flex gap-4 items-center">
+                <!-- Dark Mode Toggle -->
+                <button id="darkModeToggle" class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                    <svg class="w-6 h-6 hidden dark:block text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/>
+                    </svg>
+                    <svg class="w-6 h-6 block dark:hidden text-gray-800" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+                    </svg>
+                </button>
+                <!-- Logout Button -->
+                <button id="logoutBtn" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
+                    Logout
+                </button>
+            </div>
+        </div>
+
+        <!-- Add New Link Form -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Add New Link</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input type="text" id="newLinkName" placeholder="Link Name" 
+                    class="px-4 py-2 rounded-lg border dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500">
+                <input type="text" id="newLinkUrl" placeholder="Link URL" 
+                    class="px-4 py-2 rounded-lg border dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500">
+            </div>
+            <button id="addNewLinkBtn" class="mt-4 px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                Add Link
+            </button>
+        </div>
+
+        <!-- Links Table -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 overflow-x-auto">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Manage Links</h2>
+            <table class="w-full">
+                <thead>
+                    <tr class="border-b dark:border-gray-700">
+                        <th class="text-left py-3 px-4 text-gray-800 dark:text-white">Name</th>
+                        <th class="text-left py-3 px-4 text-gray-800 dark:text-white">URL</th>
+                        <th class="text-left py-3 px-4 text-gray-800 dark:text-white">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="linksTable">
+                    <!-- Dynamic content will be loaded here -->
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <script type="module" src="admin.js"></script>
-  </body>
+    <script>
+        // Dark mode toggle functionality
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        darkModeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+        });
+
+        // Check for saved dark mode preference
+        if (localStorage.getItem('darkMode') === 'true' || 
+            (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+</body>
 </html>

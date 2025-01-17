@@ -32,12 +32,23 @@ async function loadLinks() {
 
     links.forEach((link) => {
         const tr = document.createElement('tr');
+        tr.className = 'border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors';
         tr.innerHTML = `
-            <td><input type="text" value="${link.name}" data-id="${link.id}" class="link-name" /></td>
-            <td><input type="text" value="${link.url}" data-id="${link.id}" class="link-url" /></td>
-            <td>
-                <button class="edit-btn" data-id="${link.id}">Edit</button>
-                <button class="delete-btn" data-id="${link.id}">Delete</button>
+            <td class="py-3 px-4">
+                <input type="text" value="${link.name}" data-id="${link.id}" 
+                    class="link-name w-full px-2 py-1 rounded border dark:border-gray-600 bg-transparent 
+                    text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500" />
+            </td>
+            <td class="py-3 px-4">
+                <input type="text" value="${link.url}" data-id="${link.id}" 
+                    class="link-url w-full px-2 py-1 rounded border dark:border-gray-600 bg-transparent 
+                    text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500" />
+            </td>
+            <td class="py-3 px-4">
+                <button class="edit-btn px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 mr-2 transition-colors" 
+                    data-id="${link.id}">Edit</button>
+                <button class="delete-btn px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition-colors" 
+                    data-id="${link.id}">Delete</button>
             </td>
         `;
         linksTable.appendChild(tr);
