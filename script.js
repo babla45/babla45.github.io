@@ -47,6 +47,7 @@ document.querySelector('a[href="admin.html"]')?.addEventListener('click', (e) =>
     e.preventDefault();
     const password = prompt('Please enter admin password:');
     if (password === 'bib') {
+        localStorage.setItem('adminAuthenticated', 'true');
         window.location.href = 'admin.html';
     } else {
         alert('Incorrect password!');
@@ -118,14 +119,24 @@ async function deleteLink(name) {
     });
 }
 
-// Event listeners for admin panel
+// Modify the admin panel event listeners to check authentication
 document.getElementById('addLinkBtn')?.addEventListener('click', () => {
+    if (localStorage.getItem('adminAuthenticated') !== 'true') {
+        alert('Unauthorized access!');
+        window.location.href = 'index.html';
+        return;
+    }
     const name = document.getElementById('linkName').value;
     const url = document.getElementById('linkUrl').value;
     addLink(name, url);
 });
 
 document.getElementById('deleteLinkBtn')?.addEventListener('click', () => {
+    if (localStorage.getItem('adminAuthenticated') !== 'true') {
+        alert('Unauthorized access!');
+        window.location.href = 'index.html';
+        return;
+    }
     const name = document.getElementById('linkName').value;
     deleteLink(name);
 });
