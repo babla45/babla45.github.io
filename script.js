@@ -20,6 +20,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// Global variable to store all links
+let allLinks = [];
+
 // Dark mode functionality
 function initializeDarkMode() {
     const darkModeToggle = document.getElementById('darkModeToggle');
@@ -111,20 +114,15 @@ async function loadLinks() {
     container.innerHTML = '';
     
     // Convert querySnapshot to array and sort by name
-    const links = [];
+    allLinks = [];
     querySnapshot.forEach((doc) => {
-        links.push({ ...doc.data(), id: doc.id });
+        allLinks.push({ ...doc.data(), id: doc.id });
     });
     
-    links.sort((a, b) => a.name.localeCompare(b.name));
+    allLinks.sort((a, b) => a.name.localeCompare(b.name));
 
-    links.forEach((link) => {
-        const a = document.createElement('a');
-        a.href = link.url;
-        a.textContent = link.name;
-        a.className = 'transform hover:scale-105 transition-all duration-200 bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-lg p-6 shadow-lg hover:shadow-xl flex items-center justify-center text-lg font-medium text-purple-700 dark:text-purple-400 hover:text-purple-900 dark:hover:text-purple-300 min-h-[100px] hover:bg-white/90 dark:hover:bg-gray-800/90';
-        container.appendChild(a);
-    });
+    // Display all links initially
+    displayLinks(allLinks);
 
     // Re-attach click event listeners to the new elements
     const boxes = document.querySelectorAll('.grid a');
@@ -132,6 +130,90 @@ async function loadLinks() {
         box.addEventListener('click', () => {
             resultMsg.textContent = box.textContent;
         });
+    });
+}
+
+// Function to display links
+function displayLinks(links) {
+    const container = document.querySelector('.grid');
+    container.innerHTML = '';
+    
+    if (links.length === 0) {
+        const noResults = document.createElement('div');
+        noResults.className = 'col-span-full text-center py-8 text-gray-500 dark:text-gray-400';
+        noResults.textContent = 'No matching projects found';
+        container.appendChild(noResults);
+        return;
+    }
+    
+    links.forEach((link) => {
+        const a = document.createElement('a');
+        a.href = link.url;
+        a.textContent = link.name;
+        a.className = 'transform hover:scale-105 transition-all duration-200 bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-lg p-6 shadow-lg hover:shadow-xl flex items-center justify-center text-lg font-medium text-purple-700 dark:text-purple-400 hover:text-purple-900 dark:hover:text-purple-300 min-h-[100px] hover:bg-white/90 dark:hover:bg-gray-800/90';
+        container.appendChild(a);
+    });
+}
+
+// Function to check if a string is a subsequence of another
+function isSubsequence(query, text) {
+    query = query.toLowerCase();
+    text = text.toLowerCase();
+    
+    let i = 0, j = 0;
+    while (i < query.length && j < text.length) {
+        if (query[i] === text[j]) {
+            i++;
+        }
+        j++;
+    }
+    return i === query.length;
+}
+
+// Function to handle search
+function handleSearch() {
+    const searchInput = document.getElementById('searchInput');
+    const searchType = document.querySelector('input[name="searchType"]:checked').value;
+    const query = searchInput.value.trim();
+    
+    if (query === '') {
+        displayLinks(allLinks);
+        return;
+    }
+    
+    let filteredLinks;
+    
+    if (searchType === 'substring') {
+        // Substring search (case-insensitive)
+        filteredLinks = allLinks.filter(link => 
+            link.name.toLowerCase().includes(query.toLowerCase())
+        );
+    } else {
+        // Subsequence search
+        filteredLinks = allLinks.filter(link => 
+            isSubsequence(query, link.name)
+        );
+    }
+    
+    displayLinks(filteredLinks);
+}
+
+// Initialize search functionality
+function initializeSearch() {
+    const searchInput = document.getElementById('searchInput');
+    const clearButton = document.getElementById('clearSearch');
+    const searchTypeRadios = document.querySelectorAll('input[name="searchType"]');
+    
+    // Add event listeners
+    searchInput.addEventListener('input', handleSearch);
+    
+    clearButton.addEventListener('click', () => {
+        searchInput.value = '';
+        displayLinks(allLinks);
+    });
+    
+    searchTypeRadios.forEach(radio => {
+        radio.addEventListener('change', handleSearch);
     });
 }
 
@@ -190,8 +272,9 @@ document.getElementById('deleteLinkBtn')?.addEventListener('click', () => {
     deleteLink(name);
 });
 
-// Make sure dark mode is initialized after DOM is loaded
+// Make sure dark mode and search are initialized after DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     initializeDarkMode();
     loadLinks();
+    initializeSearch();
 });

@@ -46,7 +46,34 @@
         <h1 class="text-4xl pb-2 md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-600 mb-4 animate-fade-in">
           My Project Lists
         </h1>
-        <p class="text-gray-600 mt-2 text-lg">A collection of my projects</p>
+        <p class="text-gray-600 mt-2 text-lg dark:text-white">A collection of my projects</p>
+        
+        <!-- Search Bar -->
+        <div class="mt-6 max-w-md mx-auto">
+          <div class="relative flex items-center">
+            <input 
+              type="text" 
+              id="searchInput" 
+              placeholder="Search projects..." 
+              class="w-full px-4 py-3 rounded-lg bg-white/70 dark:bg-gray-800/70 border border-purple-200 dark:border-gray-700 text-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400"
+            >
+            <button id="clearSearch" class="absolute right-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          </div>
+          <div class="flex items-center mt-2 text-sm text-green-600 dark:text-green">
+            <label class="flex items-center mr-4 cursor-pointer">
+              <input type="radio" name="searchType" value="substring" checked class="mr-1 text-purple-600 focus:ring-purple-500">
+              <span>Substring</span>
+            </label>
+            <label class="flex items-center cursor-pointer">
+              <input type="radio" name="searchType" value="subsequence" class="mr-1 text-purple-600 focus:ring-purple-500">
+              <span>Subsequence</span>
+            </label>
+          </div>
+        </div>
       </div>
 
       <!-- Projects Container -->
