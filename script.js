@@ -26,8 +26,6 @@ let allLinks = [];
 // Add these at the top of the file, after existing imports
 let isOnline = navigator.onLine;
 const offlineIndicator = document.createElement('div');
-const connectionIndicator = document.createElement('div');
-let lastPerformanceCheck = 0;
 let isAdmin = localStorage.getItem('adminAuthenticated') === 'true';
 
 // Dark mode functionality
@@ -127,18 +125,6 @@ function setupConnectivityIndicators() {
     `;
     document.body.appendChild(offlineIndicator);
     
-    // Connection quality indicator (new)
-    connectionIndicator.className = 'fixed bottom-4 left-4 ml-36 px-4 py-2 bg-yellow-500 text-white rounded-lg shadow-lg z-50 transition-all opacity-0';
-    connectionIndicator.innerHTML = `
-        <div class="flex items-center">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-            </svg>
-            <span>Slow connection</span>
-        </div>
-    `;
-    document.body.appendChild(connectionIndicator);
-    
     // Admin mode indicator (new)
     if (isAdmin) {
         const adminIndicator = document.createElement('div');
@@ -168,42 +154,7 @@ function setupConnectivityIndicators() {
     window.addEventListener('offline', () => {
         isOnline = false;
         offlineIndicator.classList.remove('hidden');
-        connectionIndicator.classList.add('opacity-0');
         showFlashMessage('You are offline');
-    });
-    
-    // Check connection speed periodically
-    setInterval(checkConnectionSpeed, 30000);
-}
-
-// Function to check connection speed
-function checkConnectionSpeed() {
-    if (!isOnline) return;
-    
-    const now = Date.now();
-    if (now - lastPerformanceCheck < 10000) return; // Don't check too frequently
-    
-    lastPerformanceCheck = now;
-    
-    const start = Date.now();
-    fetch('https://www.gstatic.com/generate_204', { 
-        method: 'HEAD',
-        cache: 'no-store',
-        mode: 'no-cors'
-    })
-    .then(() => {
-        const duration = Date.now() - start;
-        if (duration > 1000) {
-            // Show slow connection indicator
-            connectionIndicator.classList.remove('opacity-0');
-            connectionIndicator.style.opacity = '1';
-            setTimeout(() => {
-                connectionIndicator.style.opacity = '0';
-            }, 5000);
-        }
-    })
-    .catch(() => {
-        // Connection check failed, do nothing
     });
 }
 
@@ -235,20 +186,7 @@ async function loadLinks() {
             return;
         }
         
-        // Check connection speed before fetching data
-        const start = Date.now();
-        
         const querySnapshot = await getDocs(collection(db, "links"));
-        
-        // Check if fetch was slow
-        const fetchTime = Date.now() - start;
-        if (fetchTime > 1500) {
-            connectionIndicator.classList.remove('opacity-0');
-            connectionIndicator.style.opacity = '1';
-            setTimeout(() => {
-                connectionIndicator.style.opacity = '0';
-            }, 5000);
-        }
         
         container.innerHTML = '';
         
