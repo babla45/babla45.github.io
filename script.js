@@ -164,8 +164,9 @@ async function loadLinks() {
     
     // Show loading indicator
     container.innerHTML = `
-        <div class="col-span-full flex justify-center items-center py-12">
+        <div class="col-span-full flex flex-col justify-center items-center py-12">
             <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-700"></div>
+            <p class="mt-4 text-gray-600 dark:text-gray-400 text-lg">Loading projects...</p>
         </div>
     `;
     
@@ -321,9 +322,11 @@ function handleSearch() {
     const searchInput = document.getElementById('searchInput');
     const searchType = document.querySelector('input[name="searchType"]:checked').value;
     const query = searchInput.value.trim();
+    const adminLinkContainer = document.getElementById('adminLinkContainer');
     
     if (query === '') {
         displayLinks(allLinks);
+        if (adminLinkContainer) adminLinkContainer.style.display = 'none';
         return;
     }
     
@@ -341,6 +344,14 @@ function handleSearch() {
         );
     }
     
+    // Check if search query exactly matches "admin"
+    const adminMatches = query.toLowerCase() === 'admin';
+    
+    // Show/hide admin panel link based on search
+    if (adminLinkContainer) {
+        adminLinkContainer.style.display = adminMatches ? 'inline' : 'none';
+    }
+    
     displayLinks(filteredLinks);
 }
 
@@ -356,6 +367,8 @@ function initializeSearch() {
     clearButton.addEventListener('click', () => {
         searchInput.value = '';
         displayLinks(allLinks);
+        const adminLinkContainer = document.getElementById('adminLinkContainer');
+        if (adminLinkContainer) adminLinkContainer.style.display = 'none';
     });
     
     searchTypeRadios.forEach(radio => {

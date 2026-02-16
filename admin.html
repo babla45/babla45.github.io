@@ -40,56 +40,68 @@
         </div>
     </div>
 
-    <div id="adminContent" class="hidden container mx-auto px-4 py-8">
-        <!-- Header with Dark Mode Toggle -->
-        <div class="flex justify-between items-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-800 dark:text-white">Admin Panel</h1>
-            <div class="flex fixed right-4 gap-4 items-center">
-                <!-- Dark Mode Toggle -->
-                <button id="darkModeToggle" class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
-                    <svg class="w-6 h-6 hidden dark:block text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/>
-                    </svg>
-                    <svg class="w-6 h-6 block dark:hidden text-gray-800" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
-                    </svg>
-                </button>
-                <!-- Logout Button -->
-                <button id="logoutBtn" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors" onclick="logout()">
-                    Logout
-                </button>
+    <div id="adminContent" class="hidden">
+        <!-- Sticky Top Nav Bar -->
+        <div class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-md px-4 sm:px-6 py-3">
+            <div class="container mx-auto flex justify-between items-center">
+                <h1 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white">Admin Panel</h1>
+                <div class="flex gap-3 items-center">
+                    <!-- Dark Mode Toggle -->
+                    <button id="darkModeToggle" class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                        <svg class="w-6 h-6 hidden dark:block text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/>
+                        </svg>
+                        <svg class="w-6 h-6 block dark:hidden text-gray-800" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+                        </svg>
+                    </button>
+                    <!-- Logout Button -->
+                    <button id="logoutBtn" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm sm:text-base" onclick="logout()">
+                        Logout
+                    </button>
+                </div>
             </div>
         </div>
 
+        <div class="container mx-auto px-4 py-8">
+
         <!-- Add New Link Form -->
-        <div class="dark:bg-gray-900 rounded-lg shadow-lg p-6 mb-8">
-            <h2 class="text-xl text-center font-semibold mb-4 text-gray-800 dark:text-white">Add New Link</h2>
+        <div class="dark:bg-gray-900 rounded-lg shadow-lg p-4 sm:p-6 mb-8">
+            <h2 class="text-lg sm:text-xl text-center font-semibold mb-4 text-gray-800 dark:text-white">Add New Link</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <input type="text" id="newLinkName" placeholder="Link Name" 
                     class="px-4 py-2 rounded-lg border dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500">
                 <input type="text" id="newLinkUrl" placeholder="Link URL" 
                     class="px-4 py-2 rounded-lg border dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500">
             </div>
-            <button id="addNewLinkBtn" class="mt-4 px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+            <button id="addNewLinkBtn" class="mt-4 w-full sm:w-auto px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
                 Add Link
             </button>
         </div>
 
         <!-- Links Table -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 overflow-x-auto">
-            <h2 class="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Manage Links</h2>
-            <table class="w-full">
-                <thead>
-                    <tr class="border-b dark:border-gray-700">
-                        <th class="text-left py-3 px-4 text-gray-800 dark:text-white">Name</th>
-                        <th class="text-left py-3 px-4 text-gray-800 dark:text-white">URL</th>
-                        <th class="text-left py-3 px-4 text-gray-800 dark:text-white">Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="linksTable">
-                    <!-- Dynamic content will be loaded here -->
-                </tbody>
-            </table>
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6">
+            <h2 class="text-lg sm:text-xl font-semibold mb-4 text-gray-800 dark:text-white">Manage Links</h2>
+            <!-- Desktop Table -->
+            <div class="hidden sm:block overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b dark:border-gray-700">
+                            <th class="text-left py-3 px-4 text-gray-800 dark:text-white">Name</th>
+                            <th class="text-left py-3 px-4 text-gray-800 dark:text-white">URL</th>
+                            <th class="text-left py-3 px-4 text-gray-800 dark:text-white">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="linksTable">
+                        <!-- Dynamic content will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+            <!-- Mobile Card Layout -->
+            <div id="linksCards" class="sm:hidden space-y-4">
+                <!-- Dynamic content will be loaded here -->
+            </div>
+        </div>
         </div>
     </div>
 

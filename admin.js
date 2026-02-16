@@ -18,9 +18,22 @@ const db = getFirestore(app);
 
 // Function to load links from Firestore
 async function loadLinks() {
-    const querySnapshot = await getDocs(collection(db, "links"));
     const linksTable = document.getElementById('linksTable');
+    const linksCards = document.getElementById('linksCards');
+    
+    // Show loading indicator
+    const loadingHTML = `
+        <div class="col-span-full flex flex-col justify-center items-center py-12">
+            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-purple-600"></div>
+            <p class="mt-3 text-gray-600 dark:text-gray-400">Loading links...</p>
+        </div>
+    `;
+    linksTable.innerHTML = `<tr><td colspan="3">${loadingHTML}</td></tr>`;
+    linksCards.innerHTML = loadingHTML;
+    
+    const querySnapshot = await getDocs(collection(db, "links"));
     linksTable.innerHTML = '';
+    linksCards.innerHTML = '';
     
     // Convert querySnapshot to array and sort by name
     const links = [];
@@ -31,6 +44,7 @@ async function loadLinks() {
     links.sort((a, b) => a.name.localeCompare(b.name));
 
     links.forEach((link) => {
+        // Desktop table row
         const tr = document.createElement('tr');
         tr.className = 'border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors';
         tr.innerHTML = `
@@ -52,6 +66,31 @@ async function loadLinks() {
             </td>
         `;
         linksTable.appendChild(tr);
+
+        // Mobile card
+        const card = document.createElement('div');
+        card.className = 'bg-gray-50 dark:bg-gray-700 rounded-lg p-4 space-y-3';
+        card.innerHTML = `
+            <div>
+                <label class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Name</label>
+                <input type="text" value="${link.name}" data-id="${link.id}" 
+                    class="link-name w-full mt-1 px-3 py-2 rounded-lg border dark:border-gray-600 bg-white dark:bg-gray-800 
+                    text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500" />
+            </div>
+            <div>
+                <label class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">URL</label>
+                <input type="text" value="${link.url}" data-id="${link.id}" 
+                    class="link-url w-full mt-1 px-3 py-2 rounded-lg border dark:border-gray-600 bg-white dark:bg-gray-800 
+                    text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500" />
+            </div>
+            <div class="flex gap-2">
+                <button class="edit-btn flex-1 px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm" 
+                    data-id="${link.id}">Edit</button>
+                <button class="delete-btn flex-1 px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm" 
+                    data-id="${link.id}">Delete</button>
+            </div>
+        `;
+        linksCards.appendChild(card);
     });
 
     // Attach event listeners to the edit and delete buttons
@@ -63,8 +102,42 @@ async function loadLinks() {
 
     document.querySelectorAll('.delete-btn').forEach(button => {
         button.addEventListener('click', () => {
-            deleteLink(button.getAttribute('data-id'));
+            showDeleteConfirmation(button.getAttribute('data-id'));
         });
+    });
+}
+
+// Function to show delete confirmation modal
+function showDeleteConfirmation(id) {
+    const backdrop = document.createElement('div');
+    backdrop.className = 'fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center';
+    backdrop.innerHTML = `
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-2xl max-w-sm w-full mx-4">
+            <h3 class="text-lg font-bold text-gray-800 dark:text-white mb-2">Delete Link</h3>
+            <p class="text-gray-600 dark:text-gray-400 mb-6">Are you sure you want to delete this link? This action cannot be undone.</p>
+            <div class="flex gap-3">
+                <button id="confirmDelete" class="flex-1 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors font-medium">
+                    Delete
+                </button>
+                <button id="cancelDelete" class="flex-1 px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(backdrop);
+
+    backdrop.querySelector('#confirmDelete').addEventListener('click', () => {
+        document.body.removeChild(backdrop);
+        deleteLink(id);
+    });
+
+    backdrop.querySelector('#cancelDelete').addEventListener('click', () => {
+        document.body.removeChild(backdrop);
+    });
+
+    backdrop.addEventListener('click', (e) => {
+        if (e.target === backdrop) document.body.removeChild(backdrop);
     });
 }
 
