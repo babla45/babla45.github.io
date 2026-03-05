@@ -1,0 +1,77 @@
+{
+  "websites": [
+    {
+      "name": "Home",
+      "url": "https://babla45.github.io"
+    },
+    {
+      "name": "Bazar",
+      "url": "https://babla45.github.io/bazar"
+    },
+    {
+      "name": "BMI Calculator",
+      "url": "https://babla45.github.io/BMI"
+    },
+    {
+      "name": "Calculator",
+      "url": "https://babla45.github.io/calculator"
+    },
+    {
+      "name": "DropBox Upload",
+      "url": "https://dropbox-upload-production.up.railway.app"
+    },
+    {
+      "name": "Electricity Bill Calculator",
+      "url": "https://babla45.github.io/electricity-bill-calculator-web-app/"
+    },
+    {
+      "name": "Encrypt or Decrypt",
+      "url": "https://babla45.github.io/protect"
+    },
+    {
+      "name": "File Uploader",
+      "url": "https://babla45.github.io/tempFileUpload"
+    },
+    {
+      "name": "Finance Tracker",
+      "url": "https://babla45.github.io/financeTracker/"
+    },
+    {
+      "name": "Md and Txt",
+      "url": "https://babla45.github.io/md-and-txt/"
+    },
+    {
+      "name": "Notepad",
+      "url": "https://babla45.github.io/saveText"
+    },
+    {
+      "name": "Photos",
+      "url": "https://babla45.github.io/beautiful-images"
+    },
+    {
+      "name": "Social Media",
+      "url": "https://babla45.github.io/social-media/"
+    },
+    {
+      "name": "Telegram Bot",
+      "url": "https://babla45.github.io/send-message-to-telegram-bot/"
+    },
+    {
+      "name": "Tic Tac Toe Game",
+      "url": "https://babla45.github.io/Tic-Tac-Toe-Game/"
+    },
+    {
+      "name": "ToDo List",
+      "url": "https://babla45.github.io/todo-list/"
+    },
+    {
+      "name": "Tools",
+      "url": "https://babla45.github.io/tools"
+    },
+    {
+      "name": "Unit Converter",
+      "url": "https://babla45.github.io/unit-converter/"
+    }
+  ]
+}
+
